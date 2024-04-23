@@ -878,25 +878,50 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K2A-GI-IEU" customClass="GistView" customModule="CioMessagingInApp">
-                                <rect key="frame" x="20" y="390" width="374" height="190"/>
-                                <color key="backgroundColor" name="AccentColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="j7r-y4-Eef"/>
-                                </constraints>
-                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="cla-dO-hhG">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="GistCell" id="2CZ-No-gEu" customClass="GistTableViewCell" customModule="APN_UIKit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="414" height="70.333335876464844"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2CZ-No-gEu" id="UIq-BO-d4i">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="70.333335876464844"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K2A-GI-IEU" customClass="GistView" customModule="CioMessagingInApp">
+                                                    <rect key="frame" x="10" y="10.000000000000004" width="394" height="50.333333333333343"/>
+                                                    <color key="backgroundColor" name="AccentColor"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="j7r-y4-Eef"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="K2A-GI-IEU" firstAttribute="top" secondItem="UIq-BO-d4i" secondAttribute="top" constant="10" id="adw-Re-r9C"/>
+                                                <constraint firstItem="K2A-GI-IEU" firstAttribute="leading" secondItem="UIq-BO-d4i" secondAttribute="leading" constant="10" id="sJ7-ej-Oyc"/>
+                                                <constraint firstAttribute="trailing" secondItem="K2A-GI-IEU" secondAttribute="trailing" constant="10" id="tgs-Uo-e6N"/>
+                                                <constraint firstAttribute="bottom" secondItem="K2A-GI-IEU" secondAttribute="bottom" constant="10" id="uGN-0A-bGC"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="gistView" destination="K2A-GI-IEU" id="tJ3-9w-yWC"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="d2i-u4-3jl"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="K2A-GI-IEU" firstAttribute="centerX" secondItem="XlU-V5-svy" secondAttribute="centerX" id="4qd-NJ-eV3"/>
-                            <constraint firstItem="K2A-GI-IEU" firstAttribute="centerY" secondItem="XlU-V5-svy" secondAttribute="centerY" id="ajx-vV-KJo"/>
-                            <constraint firstItem="K2A-GI-IEU" firstAttribute="leading" secondItem="d2i-u4-3jl" secondAttribute="leading" constant="20" id="jdt-Yz-HPx"/>
-                            <constraint firstItem="d2i-u4-3jl" firstAttribute="trailing" secondItem="K2A-GI-IEU" secondAttribute="trailing" constant="20" id="jx0-xE-VbP"/>
+                            <constraint firstItem="cla-dO-hhG" firstAttribute="top" secondItem="d2i-u4-3jl" secondAttribute="top" id="O9i-TJ-s5i"/>
+                            <constraint firstItem="d2i-u4-3jl" firstAttribute="bottom" secondItem="cla-dO-hhG" secondAttribute="bottom" id="VCz-Iz-laZ"/>
+                            <constraint firstItem="d2i-u4-3jl" firstAttribute="trailing" secondItem="cla-dO-hhG" secondAttribute="trailing" id="Zbl-FP-hw4"/>
+                            <constraint firstItem="cla-dO-hhG" firstAttribute="leading" secondItem="d2i-u4-3jl" secondAttribute="leading" id="oAn-Pa-2wB"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="gistView" destination="K2A-GI-IEU" id="MGb-UI-R5k"/>
+                        <outlet property="tableView" destination="cla-dO-hhG" id="25G-wq-HiH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QJB-g2-GLL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
