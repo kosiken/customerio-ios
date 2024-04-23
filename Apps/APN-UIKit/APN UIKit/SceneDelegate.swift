@@ -46,15 +46,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     // Set visible window based on user login status
     func setVisibleWindow() {
-        // If previous user is not a guest login and credentials were used to login into the app
-        if let _ = storage.userEmailId {
-            let navigationController = UINavigationController(rootViewController: DashboardViewController
-                .newInstance())
-            window?.rootViewController = navigationController
-        } else {
-            let navigationController = UINavigationController(rootViewController: LoginViewController.newInstance())
-            window?.rootViewController = navigationController
-        }
+        // Only launch the POC controller. Ignore all other screens in the sample app.
+        window?.rootViewController = UIStoryboard.getViewController(identifier: "POCController")
         window?.makeKeyAndVisible()
     }
 

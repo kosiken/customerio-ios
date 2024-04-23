@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="37F-6d-U3o">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="37F-6d-U3o">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -869,10 +870,46 @@
             </objects>
             <point key="canvasLocation" x="4202" y="4"/>
         </scene>
+        <!--Controller-->
+        <scene sceneID="07G-9V-FZ0">
+            <objects>
+                <viewController storyboardIdentifier="POCController" id="JC9-02-1tp" customClass="POCController" customModule="APN_UIKit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="XlU-V5-svy">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K2A-GI-IEU" customClass="GistView" customModule="CioMessagingInApp">
+                                <rect key="frame" x="20" y="390" width="374" height="190"/>
+                                <color key="backgroundColor" name="AccentColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="j7r-y4-Eef"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="d2i-u4-3jl"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="K2A-GI-IEU" firstAttribute="centerX" secondItem="XlU-V5-svy" secondAttribute="centerX" id="4qd-NJ-eV3"/>
+                            <constraint firstItem="K2A-GI-IEU" firstAttribute="centerY" secondItem="XlU-V5-svy" secondAttribute="centerY" id="ajx-vV-KJo"/>
+                            <constraint firstItem="K2A-GI-IEU" firstAttribute="leading" secondItem="d2i-u4-3jl" secondAttribute="leading" constant="20" id="jdt-Yz-HPx"/>
+                            <constraint firstItem="d2i-u4-3jl" firstAttribute="trailing" secondItem="K2A-GI-IEU" secondAttribute="trailing" constant="20" id="jx0-xE-VbP"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="gistView" destination="K2A-GI-IEU" id="MGb-UI-R5k"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QJB-g2-GLL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1757.9710144927537" y="-670.3125"/>
+        </scene>
     </scenes>
     <resources>
         <image name="copy" width="512" height="512"/>
         <image name="settings" width="512" height="512"/>
+        <namedColor name="AccentColor">
+            <color red="0.89019608497619629" green="1" blue="0.80392158031463623" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

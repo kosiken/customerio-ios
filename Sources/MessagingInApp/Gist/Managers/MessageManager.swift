@@ -35,7 +35,7 @@ class MessageManager: EngineWebDelegate {
         self.engine = EngineWeb(configuration: engineWebConfiguration)
         if let engine = engine {
             engine.delegate = self
-            self.gistView = GistView(message: currentMessage, engineView: engine.view)
+            self.gistView = GistView()
         }
     }
 
