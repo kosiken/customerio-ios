@@ -84,10 +84,10 @@ class CustomerIOImplementation: CustomerIOInstance {
         body: RequestBody
     ) {
         if identifier.isBlankOrEmpty() {
-            logger.error("profile cannot be identified: Identifier is empty. Please retry with a valid, non-empty identifier.")
+            print("profile cannot be identified: Identifier is empty. Please retry with a valid, non-empty identifier.")
             return
         }
-        logger.info("identify profile \(identifier)")
+        print("identify profile \(identifier)")
 
         let currentlyIdentifiedProfileIdentifier = profileStore.identifier
         let isChangingIdentifiedProfile = currentlyIdentifiedProfileIdentifier != nil &&
@@ -96,15 +96,14 @@ class CustomerIOImplementation: CustomerIOInstance {
 
         if let currentlyIdentifiedProfileIdentifier = currentlyIdentifiedProfileIdentifier,
            isChangingIdentifiedProfile {
-            logger.info("changing profile from id \(currentlyIdentifiedProfileIdentifier) to \(identifier)")
+            print("changing profile from id \(currentlyIdentifiedProfileIdentifier) to \(identifier)")
 
-            logger
-                .debug(
+            print(
                     "deleting token from previously identified profile to prevent sending messages to it. It's assumed that for privacy and messaging relevance, you only want to send messages to devices that a profile is currently identifed with."
                 )
             deleteDeviceToken()
 
-            logger.debug("running hooks changing profile from \(currentlyIdentifiedProfileIdentifier) to \(identifier)")
+            print("running hooks changing profile from \(currentlyIdentifiedProfileIdentifier) to \(identifier)")
             hooks.profileIdentifyHooks.forEach { hook in
                 hook.beforeIdentifiedProfileChange(
                     oldIdentifier: currentlyIdentifiedProfileIdentifier,
@@ -114,7 +113,7 @@ class CustomerIOImplementation: CustomerIOInstance {
         }
 
         let jsonBodyString = jsonAdapter.toJsonString(body)
-        logger.debug("identify profile attributes \(jsonBodyString ?? "none")")
+        print("identify profile attributes \(jsonBodyString ?? "none")")
 
         let queueTaskData = IdentifyProfileQueueTaskData(
             identifier: identifier,
@@ -138,22 +137,22 @@ class CustomerIOImplementation: CustomerIOInstance {
         // XXX: better handle scenario when adding task to queue is not successful
         guard queueStatus.success else {
             // XXX: better handle scenario when adding task to queue is not successful
-            logger.debug("failed to enqueue identify task")
+            print("failed to enqueue identify task")
             return
         }
 
-        logger.debug("storing identifier on device storage \(identifier)")
+        print("storing identifier on device storage \(identifier)")
         profileStore.identifier = identifier
 
         if isFirstTimeIdentifying || isChangingIdentifiedProfile {
             if let existingDeviceToken = globalDataStore.pushDeviceToken {
-                logger.debug("registering existing device token to newly identified profile: \(identifier)")
+                print("registering existing device token to newly identified profile: \(identifier)")
                 // this code assumes that the newly identified profile has been saved to device storage. only call this
                 // function until after the SDK stores the new profile identifier
                 registerDeviceToken(existingDeviceToken)
             }
 
-            logger.debug("running hooks profile identified \(identifier)")
+            print("running hooks profile identified \(identifier)")
             hooks.profileIdentifyHooks.forEach { hook in
                 hook.profileIdentified(identifier: identifier)
             }
@@ -165,24 +164,23 @@ class CustomerIOImplementation: CustomerIOInstance {
     }
 
     public func clearIdentify() {
-        logger.info("clearing identified profile")
+        print("clearing identified profile")
 
         guard let currentlyIdentifiedProfileIdentifier = profileStore.identifier else {
             return
         }
 
-        logger
-            .debug(
+        print(
                 "delete device token from \(currentlyIdentifiedProfileIdentifier) to stop sending push to a profile that is no longer identified"
             )
         deleteDeviceToken()
 
-        logger.debug("running hooks: profile stopped being identified \(currentlyIdentifiedProfileIdentifier)")
+        print("running hooks: profile stopped being identified \(currentlyIdentifiedProfileIdentifier)")
         hooks.profileIdentifyHooks.forEach { hook in
             hook.beforeProfileStoppedBeingIdentified(oldIdentifier: currentlyIdentifiedProfileIdentifier)
         }
 
-        logger.debug("deleting profile info from device storage")
+        print("deleting profile info from device storage")
         // remove device identifier from storage last so hooks can succeed.
         profileStore.identifier = nil
     }
@@ -227,18 +225,18 @@ class CustomerIOImplementation: CustomerIOInstance {
      Adds device default and custom attributes and registers device token.
      */
     private func addDeviceAttributes(deviceToken: String, customAttributes: [String: Any] = [:]) {
-        logger.info("registering device token \(deviceToken)")
-        logger.debug("storing device token to device storage \(deviceToken)")
+        print("registering device token \(deviceToken)")
+        print("storing device token to device storage \(deviceToken)")
         // no matter what, save the device token for use later. if a customer is identified later,
         // we can reference the token and register it to a new profile.
         globalDataStore.pushDeviceToken = deviceToken
 
         guard let identifier = profileStore.identifier else {
-            logger.info("no profile identified, so not registering device token to a profile")
+            print("no profile identified, so not registering device token to a profile")
             return
         }
         if identifier.isBlankOrEmpty() {
-            logger.error("profile cannot be identified: Identifier is empty, so not registering device token to a profile")
+            print("profile cannot be identified: Identifier is empty, so not registering device token to a profile")
             return
         }
 
@@ -247,7 +245,7 @@ class CustomerIOImplementation: CustomerIOInstance {
         // is
         // required to prevent SDK execution for unsupported OS.
         if deviceInfo.osName == nil {
-            logger.info("SDK being executed from unsupported OS. Ignoring request to register push token.")
+            print("SDK being executed from unsupported OS. Ignoring request to register push token.")
             return
         }
         // Consolidate all Apple platforms under iOS
@@ -284,17 +282,17 @@ class CustomerIOImplementation: CustomerIOInstance {
      Delete the currently registered device token
      */
     public func deleteDeviceToken() {
-        logger.info("deleting device token request made")
+        print("deleting device token request made")
 
         guard let existingDeviceToken = globalDataStore.pushDeviceToken else {
-            logger.info("no device token exists so ignoring request to delete")
+            print("no device token exists so ignoring request to delete")
             return // no device token to delete, ignore request
         }
         // Do not delete push token from device storage. The token is valid
         // once given to SDK. We need it for future profile identifications.
 
         guard let identifiedProfileId = profileStore.identifier else {
-            logger.info("no profile identified so not removing device token from profile")
+            print("no profile identified so not removing device token from profile")
             return // no profile to delete token from, ignore request
         }
 
@@ -319,9 +317,9 @@ class CustomerIOImplementation: CustomerIOInstance {
         event: Metric,
         deviceToken: String
     ) {
-        logger.info("push metric \(event.rawValue)")
+        print("push metric \(event.rawValue)")
 
-        logger.debug("delivery id \(deliveryID) device token \(deviceToken)")
+        print("delivery id \(deliveryID) device token \(deviceToken)")
 
         _ = backgroundQueue.addTask(
             type: QueueTaskType.trackPushMetric.rawValue,
@@ -344,12 +342,12 @@ extension CustomerIOImplementation {
     ) -> Bool {
         let eventTypeDescription = (type == .screen) ? "track screen view event" : "track event"
 
-        logger.info("\(eventTypeDescription) \(name)")
+        print("\(eventTypeDescription) \(name)")
 
         guard let currentlyIdentifiedProfileIdentifier = profileStore.identifier else {
             // XXX: when we have anonymous profiles in SDK,
             // we can decide to not ignore events when a profile is not logged yet.
-            logger.info("ignoring \(eventTypeDescription) \(name) because no profile currently identified")
+            print("ignoring \(eventTypeDescription) \(name) because no profile currently identified")
             return false
         }
 
@@ -359,10 +357,10 @@ extension CustomerIOImplementation {
 
         let requestBody = TrackRequestBody(type: type, name: name, data: data, timestamp: dateUtil.now)
         guard let jsonBodyString = jsonAdapter.toJsonString(requestBody) else {
-            logger.error("attributes provided for \(eventTypeDescription) \(name) failed to JSON encode.")
+            print("attributes provided for \(eventTypeDescription) \(name) failed to JSON encode.")
             return false
         }
-        logger.debug("\(eventTypeDescription) attributes \(jsonBodyString)")
+        print("\(eventTypeDescription) attributes \(jsonBodyString)")
 
         let queueData = TrackEventQueueTaskData(
             identifier: currentlyIdentifiedProfileIdentifier,
